@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  icon: string;
+  target?: "_self" | "_blank";
+}
+
+const { title, description, href, icon, target = "_self" } = Astro.props;
+---
+
+<a
+  href={href}
+  target={target}
+  rel={target === "_blank" ? "noopener noreferrer" : undefined}
+  class="block rounded-2xl border border-blue-800 bg-blue-900/50 p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:bg-blue-900/80 hover:shadow-md"
+>
+  <div class="mb-3 text-center text-3xl">{icon}</div>
+  <h2 class="mb-2 text-lg font-semibold text-gray-100">{title}</h2>
+  <p class="text-sm leading-relaxed text-gray-300">{description}</p>
+</a>

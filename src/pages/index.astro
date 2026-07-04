@@ -1,11 +1,117 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import LinkCard from "../components/LinkCard.astro";
+import SidebarNews from "../components/SidebarNews.astro";
+import { fetchNews } from "../lib/fetchNews";
+import "../global.css";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const modalities = [
+  {
+    name: "Radioscopías",
+    links: [
+      {
+        title: "Registro de Procedimientos",
+        description: "Formulario para el ingreso detallado de radioscopías.",
+        href: "https://hc-imagenes.fillout.com/registro-radioscopia",
+        icon: "📝",
+      },
+      {
+        title: "Base de Datos",
+        description:
+          "Acceso a la planilla centralizada con el registro histórico.",
+        href: "https://docs.google.com/spreadsheets/d/1pA-PZBojSAqzaFenS1D8HK2WcJkbbJfkzr9u_7zaPmE/edit?gid=1574655817#gid=1574655817",
+        icon: "🗄️",
+      },
+      {
+        title: "Métricas del Servicio",
+        description:
+          "Panel interactivo de análisis con estadísticas operativas.",
+        href: "https://datastudio.google.com/s/uF2kLqysvic",
+        icon: "📊",
+      },
+    ],
+  },
+  {
+    name: "Radiografías",
+    links: [
+      {
+        title: "Próximamente",
+        description: "Sección en desarrollo.",
+        href: "#",
+        icon: "🚧",
+      },
+    ],
+  },
+  {
+    name: "Tomografías",
+    links: [
+      {
+        title: "Próximamente",
+        description: "Sección en desarrollo.",
+        href: "#",
+        icon: "🚧",
+      },
+    ],
+  },
+  {
+    name: "Mamografías",
+    links: [
+      {
+        title: "Próximamente",
+        description: "Sección en desarrollo.",
+        href: "#",
+        icon: "🚧",
+      },
+    ],
+  },
+];
+
+const allNews = await fetchNews();
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Diagnóstico por Imágenes — Portal de Servicio">
+  <main class="mx-auto min-h-screen max-w-7xl px-4 py-16">
+    <h1
+      class="mb-2 text-center text-4xl font-bold tracking-tight text-gray-100"
+    >
+      Diagnóstico por Imágenes
+    </h1>
+    <p class="mb-16 text-center text-blue-200">
+      Hospital Central — Portal de acceso a servicios
+    </p>
+
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
+      <div>
+        {
+          modalities.map((mod) => (
+            <section class="mb-16 w-full">
+              <h2 class="mb-6 text-2xl font-semibold text-blue-200">
+                {mod.name}
+              </h2>
+              <div class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {mod.links.map((link) => (
+                  <LinkCard {...link} target="_blank" />
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+
+      {
+        allNews.length > 0 && (
+          <aside class="lg:border-l lg:border-blue-800 lg:pl-8">
+            <h2 class="mb-6 text-lg font-semibold text-blue-200">
+              Noticias Técnicas
+            </h2>
+            <div class="flex flex-col gap-3">
+              {allNews.map((news) => (
+                <SidebarNews {...news} />
+              ))}
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </main>
 </Layout>
